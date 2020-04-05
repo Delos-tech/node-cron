@@ -12,7 +12,7 @@ describe('Scheduler', () => {
     });
 
     it('should emit an event on matched time', (done) => {
-        let scheduler = new Scheduler('* * * * * *');
+        let scheduler = new Scheduler({ pattern: '* * * * * *'});
 
         scheduler.on('scheduled-time-matched', (date) => {
             assert.isNotNull(date);
@@ -26,7 +26,7 @@ describe('Scheduler', () => {
     });
 
     it('should emit an event every second', (done) => {
-        let scheduler = new Scheduler('* * * * * *');
+        let scheduler = new Scheduler({ pattern: '* * * * * *'});
         let emited = 0;
         scheduler.on('scheduled-time-matched', (date) => {
             emited += 1;
@@ -43,7 +43,12 @@ describe('Scheduler', () => {
 
     it('should recover missed executions', (done) => {
         this.clock.restore();
-        let scheduler = new Scheduler('* * * * * *', null, true);
+        let scheduler = new Scheduler({
+            pattern: '* * * * * *',
+            timezone: null,
+            autorecover: true
+        });
+
         let emited = 0;
         scheduler.on('scheduled-time-matched', () => {
             emited += 1;
@@ -51,7 +56,7 @@ describe('Scheduler', () => {
         scheduler.start();
         let wait = true;
         let startedAt = new Date();
-        
+
         while(wait){
             if((new Date().getTime() - startedAt.getTime()) > 1000){
                 wait = false;
@@ -67,7 +72,11 @@ describe('Scheduler', () => {
 
     it('should ignore missed executions', (done) => {
         this.clock.restore();
-        let scheduler = new Scheduler('* * * * * *', null, false);
+        let scheduler = new Scheduler({
+            pattern: '* * * * * *',
+            timezone: null,
+            autorecover: false
+        });
         let emited = 0;
         scheduler.on('scheduled-time-matched', () => {
             emited += 1;
@@ -75,7 +84,7 @@ describe('Scheduler', () => {
         scheduler.start();
         let wait = true;
         let startedAt = new Date();
-        
+
         while(wait){
             if((new Date().getTime() - startedAt.getTime()) > 1000){
                 wait = false;
@@ -88,4 +97,33 @@ describe('Scheduler', () => {
             done();
         }, 1000);
     }).timeout(3000);
+
+    it('should accept dates', (done) => {
+        this.clock.restore();
+        let scheduler = new Scheduler({
+            datetime: new Date(new Date().getTime() + 1000),
+            timezone: null,
+            autorecover: false
+        });
+        let emited = 0;
+        scheduler.on('scheduled-time-matched', () => {
+            emited += 1;
+        });
+        scheduler.start();
+        let wait = true;
+        let startedAt = new Date();
+
+        while(wait){
+            if((new Date().getTime() - startedAt.getTime()) > 1000){
+                wait = false;
+            }
+        }
+
+        setTimeout(() => {
+            scheduler.stop();
+            assert.equal(emited, 1);
+            done();
+        }, 1000);
+    }).timeout(3000);
+
 });
