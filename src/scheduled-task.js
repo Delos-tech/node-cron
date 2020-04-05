@@ -15,16 +15,16 @@ class ScheduledTask extends EventEmitter {
             };
         }
         let task = new Task(func);
-        // let scheduler = new Scheduler({
-        //     pattern: cronExpression,
-        //     timezone: options.timezone,
-        //     autorecover: options.recoverMissedExecutions
-        // });
-        let scheduler = new Scheduler(
-            cronExpression,
-            options.timezone,
-            options.recoverMissedExecutions
-        );
+        let scheduler = new Scheduler({
+            pattern: cronExpression,
+            timezone: options.timezone,
+            autorecover: options.recoverMissedExecutions
+        });
+        // let scheduler = new Scheduler(
+        //     cronExpression,
+        //     options.timezone,
+        //     options.recoverMissedExecutions
+        // );
 
         scheduler.on('scheduled-time-matched', (now) => {
             let result = task.execute(now);
