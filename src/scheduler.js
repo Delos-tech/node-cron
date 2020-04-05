@@ -4,6 +4,7 @@ const EventEmitter = require('events');
 const TimeMatcher = require('./time-matcher');
 
 class Scheduler extends EventEmitter{
+    // constructor({pattern, timezone, autorecover, datetime}){
     constructor(pattern, timezone, autorecover){
         super();
         this.timeMatcher = new TimeMatcher(pattern, timezone);
@@ -22,7 +23,7 @@ class Scheduler extends EventEmitter{
             const elapsedTime = process.hrtime(lastCheck);
             const elapsedMs = (elapsedTime[0] * 1e9 + elapsedTime[1]) / 1e6;
             const missedExecutions = Math.floor(elapsedMs / 1000);
-            
+
             for(let i = missedExecutions; i >= 0; i--){
                 var date = new Date(new Date().getTime() - i * 1000);
                 if(lastExecution.getTime() < date.getTime() && (i === 0 || this.autorecover) && this.timeMatcher.match(date)){
