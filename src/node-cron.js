@@ -11,19 +11,19 @@ module.exports = (() => {
    * Creates a new task to execute given function when the cron
    *  expression ticks.
    *
-   * @param {string} expression - cron expression.
+   * @param {string} expression - cron expression. or {Date} a date object to fire the event
    * @param {Function} func - task to be executed.
    * @param {Object} options - a set of options for the scheduled task:
-   *    - scheduled <boolean>: if a schaduled task is ready and running to be 
+   *    - scheduled <boolean>: if a schaduled task is ready and running to be
    *      performed when the time mach with the cron excpression.
    *    - timezone <string>: the tiemzone to execute the tasks.
-   * 
-   *    Example: 
+   *
+   *    Example:
    *    {
    *      "scheduled": true,
    *      "timezone": "America/Sao_Paulo"
-   *    } 
-   * 
+   *    }
+   *
    * @returns {ScheduledTask} update function.
    */
     function schedule(expression, func, options) {
@@ -43,7 +43,7 @@ module.exports = (() => {
     /**
      * Check if a cron expression is valid
      * @param {string} expression - cron expression.
-     * 
+     *
      * @returns {boolean} - returns true if expression is valid
      */
     function validate(expression) {

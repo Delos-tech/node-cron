@@ -9,19 +9,16 @@ const resolution = {
 };
 
 class Scheduler extends EventEmitter {
-    constructor({ pattern, timezone, autorecover, datetime }) {
+    constructor(pattern, timezone, autorecover) {
         super();
-        if (pattern !== undefined) {
+        if (typeof pattern === 'string') {
             this.timeMatcher = new TimeMatcher(pattern, timezone);
-        }
-        this.autorecover = autorecover;
-        this.datetime = datetime;
-        if (pattern !== undefined) {
             this.resolution = resolution.SECONDS;
         } else {
-            // todo check for datetime and error if it's missing too
+            this.datetime = pattern;
             this.resolution = resolution.TENTHS;
         }
+        this.autorecover = autorecover;
     }
 
     start() {

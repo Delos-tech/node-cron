@@ -21,6 +21,16 @@ describe('ScheduledTask', () => {
         scheduledTask.stop();
     });
 
+    it('should start a date based task by default', () => {
+        let executed = 0;
+        let scheduledTask = new ScheduledTask(new Date(new Date().getTime() + 1000), () => {
+            executed += 1;
+        });
+        this.clock.tick(3000);
+        assert.equal(executed, 1);
+        scheduledTask.stop();
+    });
+
     it('should create a task stoped', () => {
         let executed = 0;
         let scheduledTask = new ScheduledTask('* * * * * *', () => {
