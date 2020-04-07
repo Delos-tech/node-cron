@@ -29,6 +29,7 @@ class Scheduler extends EventEmitter {
         let lastExecution = new Date();
 
         var matchTime = () => {
+            let done = false;
             const delay = this.resolution;
             const elapsedTime = process.hrtime(lastCheck);
             const elapsedMs = (elapsedTime[0] * 1e9 + elapsedTime[1]) / 1e6;
@@ -45,10 +46,15 @@ class Scheduler extends EventEmitter {
                         date = new Date(date.getTime - (date.getMilliseconds() / 10));
                     }
                     lastExecution = date;
+                    if (this.datetime !== undefined) {
+                        done = true;
+                    }
                 }
             }
             lastCheck = process.hrtime();
-            this.timeout = setTimeout(matchTime, delay);
+            if (!done) {
+                this.timeout = setTimeout(matchTime, delay);
+            }
         };
         matchTime();
     }
@@ -64,11 +70,10 @@ class Scheduler extends EventEmitter {
         if (this.resolution === resolution.SECONDS) {
             return this.timeMatcher.match(date);
         } else {
-            return this.datetime <= date && this.datetime > last ;
+            return this.datetime <= date && this.datetime > last;
         }
     }
 }
-
 
 
 module.exports = Scheduler;
