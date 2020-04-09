@@ -4,7 +4,7 @@
   "description": "A simple cron-like task scheduler for Node.js",
   "author": "Lucas Merencia",
   "license": "ISC",
-  "homepage": "https://github.com/merencia/node-cron",
+  "homepage": "https://github.com/delos/node-cron",
   "main": "src/node-cron.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha --recursive",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/merencia/node-cron.git"
+    "url": "git+https://github.com/delos/node-cron.git"
   },
   "keywords": [
     "cron",
@@ -27,7 +27,7 @@
     "job"
   ],
   "bugs": {
-    "url": "https://github.com/merencia/node-cron/issues"
+    "url": "https://github.com/delos/node-cron/issues"
   },
   "devDependencies": {
     "chai": "^4.2.0",
